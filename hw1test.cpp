@@ -351,13 +351,13 @@ void Sudoku::backtracking(int locate){
 		if(question[locate]!=0){
 			answer[locate]=question[locate];
 			answer_num++;
+if(answer_num>=2)return;
 			for(int i=0;i<144;i++){
-				if((i)%12==0)cout<<endl;
-				cout<<answer[i]<<' ';
+		out[i]=answer[i];
 			}
-			cout<<endl;
+			
 
-			cout<< answer_num<<endl;
+		
 		}
 
 		else if(question[locate]==0){
@@ -374,7 +374,7 @@ void Sudoku::backtracking(int locate){
 
 						out[i]=answer[i];
 					}
-					cout<<endl;
+				
 
 				}
 
@@ -398,6 +398,8 @@ void Sudoku::backtracking(int locate){
 				answer[locate]=i;
 				backtracking(locate-1);
 			}
+if(answer_num>=2)return;
+
 		}
 		answer[locate]=0;
 
