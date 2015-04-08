@@ -83,7 +83,7 @@ int Sudoku:: questiontest(){
 
 
 
-
+return 0;
 
 
 	}
@@ -285,7 +285,11 @@ void Sudoku::Solve(){
 	 */
 
 
-	questiontest();
+int iiii=questiontest();
+if(iiii==-1){
+cout<<'0'<<endl;
+return ;
+}
 
 	int slonum=1;
 	while(slonum>0){     //test for smart
