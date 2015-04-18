@@ -20,7 +20,6 @@ class Sudoku{
                 bool possible_answer[144][10];
                 int possible_ans_num[144];
                 int out[144];
-
 };
 #endif
 
