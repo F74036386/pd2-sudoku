@@ -14,9 +14,9 @@ class Sudoku{
 		void backtracking(int locate);
 		void output();		
 		int  questiontest();
-		void qtest();
-		void make hole();
-
+		void qtest();         //
+		void makehole(int n ,int *qmap);    //
+		int testnothole();
 	private:
 		int question[144];
 		int answer[144];
@@ -25,23 +25,95 @@ class Sudoku{
 		bool possible_answer[144][10];
 		int possible_ans_num[144];
 		int out[144];
+		int smallnothole;
+		int nothole;
 
 };
 int main (){
 	Sudoku ss;
-	ss.ReadIn();
+//	ss.ReadIn();
 	//printf("start slove\n");
 
-	ss.Solve();
+//	ss.Solve();
 	//system("pause");
-
+ss.qtest();
 	return 0;
+}
+
+void Sudoku::qtest(){
+	int qmap[144]={9,1,8,3,2,7,5,6,4,-1,-1,-1,6,7,3,5,4,8,1,9,2,-1,-1,-1,4,5,2,6,1,9,8,7,3,-1,-1,-1,1,2,5,-1,-1,-1,9,4,7,3,8,6,7,6,9,-1,-1,-1,3,8,5,2,4,1,8,3,4,-1,-1,-1,6,2,1,5,9,7,-1,-1,-1,1,3,6,7,5,8,4,2,9,-1,-1,-1,7,9,4,2,3,6,1,5,8,-1,-1,-1,2,8,5,4,1,9,7,6,3,5,4,7,9,6,3,-1,-1,-1,8,1,2,3,9,1,8,5,2,-1,-1,-1,6,7,4,2,8,6,4,7,1,-1,-1,-1,9,3,5};
+	smallnothole=144;
+	nothole=0;
+for(int i=0;i<144;i++){
+question[i]=qmap[i];
+}
+
+
+
+
+cout<<"a"<<endl;
+	makehole(143,qmap);
+}
+int Sudoku::testnothole(){
+	int k=0;
+	for(int i=0;i<144;i++){
+		if(question[i]!=0)k++;
+	}
+	return k;
+
+
+
+
+}
+void Sudoku::makehole(int n,int* qmap){
+if(n<0)return;
+
+cout<<"n="<<n<<endl;	
+if(qmap[n]==-1){question[n]=-1;
+cout<<"-1"<<endl;
+makehole(n-1,qmap);
+return;
+}
+	for(int i=1;i>-1;i--){
+		if(i==1){
+
+//cout<<"ha"<<endl;
+			question[n]=qmap[n];
+			makehole(n-1,qmap);
+		}
+		else if(i==0){           cout<<"sm="<<smallnothole<<endl;
+			question[n]=0;
+			int k=Solve();
+			if(k==1){
+cout<<"question[n]="<<question[n]<<endl;
+//cout<<'b'<<endl;
+				nothole=testnothole();
+cout<<"nothole="<<nothole<<endl;
+				if(nothole<smallnothole){
+//cout<<'c';
+					smallnothole=nothole;
+					for(int l=0;l<144;l++){
+						out[l]=question[l];
+
+					}
+					cout<<"smallhole="<<smallnothole<<endl;
+
+					output();
+				}
+
+				makehole(n-1,qmap);
+
+			}
+
+			question[n]=qmap[n];	
+		}
+	}
 }
 
 
 void Sudoku::GiveQuestion(){
-printf(" 0 0 6 8 0 3 9 5 1 -1 -1 -1\n0 7 0 0 5 0 0 0 4 -1 -1 -1\n9 0 1 0 2 0 8 0 0 -1 -1 -1\n-1 -1 -1 1 0 2 0 0 0 9 0 6\n-1 -1 -1 0 8 0 1 0 0 0 2 0\n-1 -1 -1 0 0 6 0 0 0 0 7 1\n1 0 0 0 4 0 -1 -1 -1 0 9 0\n0 0 4 0 6 0 -1 -1 -1 1 0 7\n0 9 0 0 1 0 -1 -1 -1 0 8 0\n0 0 2 -1 -1 -1 0 4 0 5 0 0\n7 0 8 -1 -1 -1 0 0 9 0 0 2\n0 6 0 -1 -1 -1 0 1 0 7 0 0\n");
-return ;
+	printf(" 0 0 6 8 0 3 9 5 1 -1 -1 -1\n0 7 0 0 5 0 0 0 4 -1 -1 -1\n9 0 1 0 2 0 8 0 0 -1 -1 -1\n-1 -1 -1 1 0 2 0 0 0 9 0 6\n-1 -1 -1 0 8 0 1 0 0 0 2 0\n-1 -1 -1 0 0 6 0 0 0 0 7 1\n1 0 0 0 4 0 -1 -1 -1 0 9 0\n0 0 4 0 6 0 -1 -1 -1 1 0 7\n0 9 0 0 1 0 -1 -1 -1 0 8 0\n0 0 2 -1 -1 -1 0 4 0 5 0 0\n7 0 8 -1 -1 -1 0 0 9 0 0 2\n0 6 0 -1 -1 -1 0 1 0 7 0 0\n");
+	return ;
 
 }
 
@@ -253,7 +325,7 @@ void Sudoku::possible_ans_test(int& locate){
 
 }
 
-void Sudoku::Solve(){
+int Sudoku::Solve(){
 	for(int i=0;i<16;i++){
 		darktable[i]=0;
 	}
@@ -262,7 +334,7 @@ void Sudoku::Solve(){
 		if(question[i]==-1){
 			int tem=darktest(i);
 			if(tem==-1){
-			//	cout<<'0'<<endl;
+				//	cout<<'0'<<endl;
 				return 0;
 			}
 		}
@@ -286,7 +358,7 @@ void Sudoku::Solve(){
 			if(darktable[i+4*j]==1)count2++;
 		}
 		if(count1!=1||count2!=1){
-		//	cout<<'0'<<endl;
+			//	cout<<'0'<<endl;
 			return 0;
 		}	
 		//		printf("count1=%d\ncount2=%d\n",count1,count2);
@@ -306,13 +378,13 @@ void Sudoku::Solve(){
 
 	int iiii=questiontest();
 	if(iiii==-1){
-	//	cout<<'0'<<endl;
+		//	cout<<'0'<<endl;
 		return 0;
 	}
 
 
 
-
+/*
 
 	//	cout<<'c'<<endl;
 	int slonum=1;
@@ -348,13 +420,13 @@ void Sudoku::Solve(){
 
 		}
 
-		
-		 
+
+
 
 	}
 
-
-answer_num=0;
+*/
+	answer_num=0;
 
 	for(int i=0;i<144;i++){
 		answer[i]=question[i];}
@@ -366,7 +438,7 @@ answer_num=0;
 	if(answer_num==0)return 0;cout<<'0'<<endl;
 	if(answer_num>1)return 2;//cout<<'2'<<endl;
 
-	return;
+	
 
 }
 
@@ -381,9 +453,9 @@ void Sudoku::backtracking(int locate){
 			answer_num++;
 			if(answer_num>=2)return;
 
-		//	for(int i=0;i<144;i++){
-		//		out[i]=answer[i];
-		//	}
+			//	for(int i=0;i<144;i++){
+			//		out[i]=answer[i];
+			//	}
 			//	output();
 
 
@@ -398,13 +470,13 @@ void Sudoku::backtracking(int locate){
 				if(possible_answer[locate][i]==0){
 					answer[locate]=i;
 					answer_num++;
-				//	cout<<answer_num<<endl;
+					//	cout<<answer_num<<endl;
 					if(answer_num>=2)return ;
 					//for(int i=0;i<144;i++){
 
 					//	out[i]=answer[i];
-				//	}
-				//		output();
+					//	}
+					//		output();
 
 
 				}

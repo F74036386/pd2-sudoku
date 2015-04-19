@@ -1,0 +1,14 @@
+Id number:F74036386
+name:林昌翰
+
+compile : make
+
+there are makefile to compile the program;
+if(you want to solve a question)
+call solve;
+else if(you want to have a question)
+call give;
+it will give you a question;
+
+
+
